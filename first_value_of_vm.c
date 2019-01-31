@@ -14,10 +14,10 @@ static void	set_size_of_field(t_filler *filler, char **line)
 	filler->size_m.x = (t_byte)ft_atoi(tmp);
 	free(*line);
 	filler->map = (char**)malloc(sizeof(char*) * filler->size_m.y);
-	filler->map_dist = (int8_t**)malloc(sizeof(char*) * filler->size_m.y);
+	filler->map_dist = (int**)malloc(sizeof(int*) * filler->size_m.y);
 	i = -1;
 	while (++i < filler->size_m.y)
-		filler->map_dist[i] = (int8_t*)ft_memalloc(filler->size_m.x);
+		filler->map_dist[i] = (int*)ft_memalloc_chr((filler->size_m.x * 2) + 1, 101);
 	free(*line);
 }
 

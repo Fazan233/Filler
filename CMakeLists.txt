@@ -7,8 +7,8 @@ set(CMAKE_C_STANDARD 99)
 add_subdirectory(./libft)
 # Create executable and add sourses to its
 AUX_SOURCE_DIRECTORY(./ FILLER_SRCS)
-add_executable(Filler ${FILLER_SRCS})
+add_executable(vuslysty.filler ${FILLER_SRCS})
 #target_compile_options(Filler PUBLIC -Wall -Wextra -Werror)
-target_include_directories(Filler PUBLIC ./includes)
+target_include_directories(vuslysty.filler PUBLIC ./includes)
 # Add library to executable
-target_link_libraries(Filler LIBFT)
+target_link_libraries(vuslysty.filler LIBFT)
