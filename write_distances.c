@@ -1,3 +1,4 @@
+#include <math.h>
 #include "filler.h"
 # define ABSM(x) ((x) < 0) ? ((x) * -1) : (x)
 
@@ -101,70 +102,7 @@
 //	}
 //}
 
-void		adding_to_lst(t_enmlst **lst, t_point *pos)
-{
-	t_enmlst	*new_lst;
-	t_enmlst	*tmp;
-
-	new_lst = (t_enmlst*)malloc(sizeof(t_enmlst));
-	new_lst->next = NULL;
-	new_lst->pos = *pos;
-	tmp = *lst;
-	if (!tmp)
-		*lst = new_lst;
-	else
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_lst;
-	}
-}
-
-void		add_lst_condition(t_filler *flr, t_enmlst **lst, t_point *pos)
-{
-	if (!flr->fst_launch)
-	{
-		if (flr->myfigure == 'o')
-		{
-			if (flr->map[pos->y][pos->x] == 'x')
-				adding_to_lst(lst, pos);
-		}
-		else
-			if (flr->map[pos->y][pos->x] == 'o')
-				adding_to_lst(lst, pos);
-	}
-	else
-	{
-		if (flr->myfigure == 'o')
-		{
-			if (flr->map[pos->y][pos->x] == 'x' ||
-				flr->map[pos->y][pos->x] == 'X')
-				adding_to_lst(lst, pos);
-		}
-		else
-			if (flr->map[pos->y][pos->x] == 'o' ||
-				flr->map[pos->y][pos->x] == 'O')
-				adding_to_lst(lst, pos);
-	}
-}
-
-t_enmlst	*add_points_to_list(t_filler *flr)
-{
-	t_enmlst	*lst;
-	t_point		pos;
-
-	lst = NULL;
-	pos.y = -1;
-	while (++pos.y < flr->size_m.y)
-	{
-		pos.x = -1;
-		while (++pos.x < flr->size_m.x)
-			add_lst_condition(flr, &lst, &pos);
-	}
-	return (lst);
-}
-
-void	finding_dist(t_filler *flr, t_point *pos, t_point *pos2)
+static void	finding_dist(t_filler *flr, t_point *pos, t_point *pos2)
 {
 	int n1;
 	int n2;
@@ -186,39 +124,13 @@ void	print_lst(t_enmlst *list)
 	}
 }
 
-void	first_launch_wrt(t_enmlst *tmp, t_point *pos, t_filler *flr)
-{
-	while (tmp)
-	{
-		pos->y = -1;
-		while (++pos->y < flr->size_m.y) {
-			pos->x = -1;
-			while (++pos->x < flr->size_m.x)
-			{
-				if (flr->map[pos->y][pos->x] == 'x' ||
-					flr->map[pos->y][pos->x] == 'X')
-					flr->map_dist[pos->y][pos->x] = -2;
-				else if (flr->map[pos->y][pos->x] == 'o' ||
-						 flr->map[pos->y][pos->x] == 'O')
-					flr->map_dist[pos->y][pos->x] = -1;
-				else
-					finding_dist(flr, pos, &tmp->pos);
-			}
-		}
-		tmp = tmp->next;
-	}
-	flr->fst_launch = 0;
-}
-
-void	write_distances(t_filler *flr)
+void		write_distances(t_filler *flr)
 {
 	t_point		pos;
 	t_enmlst	*tmp;
 
-	flr->fst_launch = 0;
 	flr->list = add_points_to_list(flr);
 	tmp = flr->list;
-	print_lst(tmp);
 	while (tmp)
 	{
 		pos.y = -1;
@@ -226,17 +138,19 @@ void	write_distances(t_filler *flr)
 		{
 			pos.x = -1;
 			while (++pos.x < flr->size_m.x)
-				if (flr->map[pos.y][pos.x] == 'x' ||
-					flr->map[pos.y][pos.x] == 'X')
+				if (flr->map[pos.y][pos.x + 4] == 'x' ||
+					flr->map[pos.y][pos.x + 4] == 'X')
 					flr->map_dist[pos.y][pos.x] = -2;
-				else if (flr->map[pos.y][pos.x] == 'o' ||
-						flr->map[pos.y][pos.x] == 'O')
+				else if (flr->map[pos.y][pos.x + 4] == 'o' ||
+						flr->map[pos.y][pos.x + 4] == 'O')
 					flr->map_dist[pos.y][pos.x] = -1;
 				else
 					finding_dist(flr, &pos, &tmp->pos);
 		}
 		tmp = tmp->next;
-	} 
+	}
+	flr->fst_launch = 0;
+	flr->list ? delele_enemlst(&flr->list) : 0;
 }
 
 
