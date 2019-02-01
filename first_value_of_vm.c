@@ -14,7 +14,6 @@ static void	set_size_of_field(t_filler *filler, char **line)
 		tmp++;
 	filler->size_m.x = ft_atoi(++tmp);
 	free(*line);
-	filler->map = (char**)malloc(sizeof(char*) * filler->size_m.y);
 	filler->map_dist = (int**)malloc(sizeof(int*) * filler->size_m.y);
 	i = -1;
 	while (++i < filler->size_m.y)
@@ -28,15 +27,10 @@ static void	set_size_of_field(t_filler *filler, char **line)
 
 void	first_value_of_vm(t_filler *filler, char **line)
 {
-
-//	get_next_line(g_fd, line);
-	if ((*line)[10] == '1')
-		filler->myfigure = 'o';
-	else
-		filler->myfigure = 'x';
+	filler->myfigure = (*line)[10] == '1' ? 'O' : 'X';
 	free(*line);
 	get_next_line(g_fd, line);
-	ft_fprintf(g_fd_t, "%s\n", *line); //
 	set_size_of_field(filler, line);
 	skip_n_lines(1, g_fd);
+	filler->fst_launch = 0;
 } 

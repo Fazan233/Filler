@@ -7,7 +7,6 @@ void	set_token_param(t_filler *flr)
 	int 	i;
 
 	get_next_line(g_fd, &line);
-	ft_fprintf(g_fd_t, "%s\n", line);
 	tmp = line;
 	while (!ft_isdigit(*tmp))
 		tmp++;
@@ -21,10 +20,7 @@ void	set_token_param(t_filler *flr)
 	while (++i < flr->size_t.y)
 	{
 		get_next_line(g_fd, &line);
-		ft_fprintf(g_fd_t, "%s\n", line);
 		flr->map_t[i] = line;
 	}
-//	get_next_line(g_fd, &line);
-//	ft_fprintf(g_fd_t, "%s\n", line);
 }
 

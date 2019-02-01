@@ -8,7 +8,7 @@ int		cell_manipulation(t_filler *flr, t_point *pos, t_point *tok, int *inter)
 	p.y = pos->y + tok->y;
 	if (flr->map_dist[p.y][p.x] < 0)
 	{
-		if (flr->myfigure == 'o')
+		if (flr->myfigure == 'O')
 			*inter += flr->map_dist[p.y][p.x] == -1 ? 1 : 2;
 		else
 			*inter += flr->map_dist[p.y][p.x] == -2 ? 1 : 2;

@@ -25,24 +25,24 @@ static void	add_lst_condition(t_filler *flr, t_enmlst **lst, t_point *pos)
 	{
 		if (flr->myfigure == 'o')
 		{
-			if (flr->map[pos->y][pos->x + 4] == 'x')
+			if (flr->map[pos->x + 4] == 'X' &&
+				flr->map_dist[pos->y][pos->x] == -2)
 				adding_to_lst(lst, pos);
 		}
 		else
-			if (flr->map[pos->y][pos->x + 4] == 'o')
+			if (flr->map[pos->x + 4] == 'O' &&
+				flr->map_dist[pos->y][pos->x] == -1)
 				adding_to_lst(lst, pos);
 	}
 	else
 	{
 		if (flr->myfigure == 'o')
 		{
-			if (flr->map[pos->y][pos->x + 4] == 'x' ||
-				flr->map[pos->y][pos->x + 4] == 'X')
+			if (flr->map[pos->x + 4] == 'X')
 				adding_to_lst(lst, pos);
 		}
 		else
-			if (flr->map[pos->y][pos->x + 4] == 'o' ||
-				flr->map[pos->y][pos->x + 4] == 'O')
+			if (flr->map[pos->x + 4] == 'O')
 				adding_to_lst(lst, pos);
 	}
 }

@@ -102,56 +102,54 @@
 //	}
 //}
 
-static void	finding_dist(t_filler *flr, t_point *pos, t_point *pos2)
-{
-	int n1;
-	int n2;
-	int res;
-
-	n1 = pos->x - pos2->x;
-	n2 = pos->y - pos2->y;
-	res = ft_pow(ABSM(n1), 2) + ft_pow(ABSM(n2), 2);
-	if (res < flr->map_dist[pos->y][pos->x])
-		flr->map_dist[pos->y][pos->x] = res;
-}
-
-void	print_lst(t_enmlst *list)
-{
-	while (list)
-	{
-		ft_printf("%i %i\n", list->pos.x, list->pos.y);
-		list = list->next;
-	}
-}
-
-void		write_distances(t_filler *flr)
-{
-	t_point		pos;
-	t_enmlst	*tmp;
-
-	flr->list = add_points_to_list(flr);
-	tmp = flr->list;
-	while (tmp)
-	{
-		pos.y = -1;
-		while (++pos.y < flr->size_m.y)
-		{
-			pos.x = -1;
-			while (++pos.x < flr->size_m.x)
-				if (flr->map[pos.y][pos.x + 4] == 'x' ||
-					flr->map[pos.y][pos.x + 4] == 'X')
-					flr->map_dist[pos.y][pos.x] = -2;
-				else if (flr->map[pos.y][pos.x + 4] == 'o' ||
-						flr->map[pos.y][pos.x + 4] == 'O')
-					flr->map_dist[pos.y][pos.x] = -1;
-				else
-					finding_dist(flr, &pos, &tmp->pos);
-		}
-		tmp = tmp->next;
-	}
-	flr->fst_launch = 0;
-	flr->list ? delele_enemlst(&flr->list) : 0;
-}
+//static void	finding_dist(t_filler *flr, t_point *pos, t_point *pos2)
+//{
+//	int n1;
+//	int n2;
+//	int res;
+//
+//	n1 = pos->x - pos2->x;
+//	n2 = pos->y - pos2->y;
+//	res = ft_pow(ABSM(n1), 2) + ft_pow(ABSM(n2), 2);
+//	if (res < flr->map_dist[pos->y][pos->x])
+//		flr->map_dist[pos->y][pos->x] = res;
+//}
+//
+////void	print_lst(t_enmlst *list)
+////{
+////	while (list)
+////	{
+////		ft_printf("%i %i\n", list->pos.x, list->pos.y);
+////		list = list->next;
+////	}
+////}
+//
+//void		write_distances(t_filler *flr)
+//{
+//	t_point		pos;
+//	t_enmlst	*tmp;
+//
+//	flr->list = add_points_to_list(flr);
+//	tmp = flr->list;
+//	while (tmp)
+//	{
+//		pos.y = -1;
+//		while (++pos.y < flr->size_m.y)
+//		{
+//			pos.x = -1;
+//			while (++pos.x < flr->size_m.x)
+//				if (flr->map[pos.y][pos.x + 4] == 'X')
+//					flr->map_dist[pos.y][pos.x] = -2;
+//				else if (flr->map[pos.y][pos.x + 4] == 'O')
+//					flr->map_dist[pos.y][pos.x] = -1;
+//				else
+//					finding_dist(flr, &pos, &tmp->pos);
+//		}
+//		tmp = tmp->next;
+//	}
+//	flr->fst_launch = 0;
+//	flr->list ? delele_enemlst(&flr->list) : 0;
+//}
 
 
 
