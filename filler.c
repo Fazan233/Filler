@@ -17,7 +17,6 @@ static void	finding_dist(t_filler *flr, t_point *pos)
 		{
 			p.x = -1;
 			while (++p.x < flr->size_m.x)
-			{
 				if (flr->map_dist[p.y][p.x] > -1)
 				{
 					n1 = pos->x - p.x;
@@ -26,7 +25,6 @@ static void	finding_dist(t_filler *flr, t_point *pos)
 					if (res < flr->map_dist[p.y][p.x])
 						flr->map_dist[p.y][p.x] = res;
 				}
-			}
 		}
 	}
 }
@@ -55,7 +53,7 @@ int 	main(void)
 	t_point		pos;
 
 	g_fd = 0;
-	g_fd = open("test", O_RDONLY);
+//	g_fd = open("test2", O_RDONLY);
 
 	while (get_next_line(g_fd, &line) > 0)
 	{

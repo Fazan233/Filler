@@ -56,7 +56,7 @@ static int	get_max_y(t_filler *flr)
 	t_point	p;
 
 	p.y = flr->size_t.y;
-	while (--p.y <= 0)
+	while (--p.y >= 0)
 	{
 		p.x = -1;
 		while (++p.x < flr->size_t.x)
@@ -72,7 +72,11 @@ t_point		get_real_size_token(t_filler *flr)
 {
 	t_point	real_size;
 
-	real_size.x = get_max_x(flr) - get_min_x(flr);
-	real_size.y = get_max_y(flr) - get_min_y(flr);
+	flr->min_t.x = get_min_x(flr);
+	flr->min_t.y = get_min_y(flr);
+	flr->max_t.x = get_max_x(flr);
+	flr->max_t.y = get_max_y(flr);
+	real_size.x = flr->max_t.x - flr->min_t.x;
+	real_size.y = flr->max_t.y - flr->min_t.y;
 	return (real_size);
 }

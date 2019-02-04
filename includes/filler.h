@@ -26,6 +26,8 @@ typedef struct		s_filler
 	t_point			minp;
 	t_point			size_t;
 	t_point			real_s_t;
+	t_point			min_t;
+	t_point			max_t;
 	char			myfigure;
 	int 			count;
 }					t_filler;

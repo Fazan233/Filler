@@ -24,11 +24,11 @@ int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
 
 	*sum = 0;
 	intersection = 0;
-	tok.y = -1;
-	while (++tok.y < flr->size_t.y)
+	tok.y = flr->min_t.y - 1;
+	while (++tok.y <= flr->max_t.y)
 	{
-		tok.x = -1;
-		while (++tok.x < flr->size_t.x)
+		tok.x = flr->min_t.x - 1;
+		while (++tok.x <= flr->max_t.x)
 			if (flr->map_t[tok.y][tok.x] == '*')
 			{
 				if (cell_manipulation(flr, pos, &tok, &intersection))
@@ -68,8 +68,8 @@ t_point	put_token(t_filler *flr)
 	int 	fin_sum;
 	int 	sum;
 
-	finish.x = 100;
-	finish.y = 100;
+	finish.x = -1;
+	finish.y = -1;
 	fin_sum = 1000000000;
 	t.x = flr->size_m.x - flr->size_t.x;
 	t.y = flr->size_m.y - flr->size_t.y;
@@ -81,9 +81,9 @@ t_point	put_token(t_filler *flr)
 		while (++pos.x <= t.x)
 			if (can_put_token(flr, &pos, &sum))
 			{
-				if (flr->count < 20)
-					vert_horiz_alg(flr, &pos, &finish);
-				else if (sum < fin_sum)
+//				if (flr->count < 20)
+//					vert_horiz_alg(flr, &pos, &finish);
+				if (sum < fin_sum)
 				{
 					finish = pos;
 					fin_sum = sum;

@@ -131,20 +131,20 @@
 //}
 
 
-int main()
-{
-	int fd;
-	int fd_vm = 0;
-	char *line;
-
-	fd = open("file", O_RDWR);
-	while (get_next_line(fd_vm, &line) > 0)
-	{
-		ft_fprintf(fd, "%s\n", line);
-	}
-	ft_printf("0 0\n");
-	return (0);
-}
+//int main()
+//{
+//	int fd;
+//	int fd_vm = 0;
+//	char *line;
+//
+//	fd = open("file", O_RDWR);
+//	while (get_next_line(fd_vm, &line) > 0)
+//	{
+//		ft_fprintf(fd, "%s\n", line);
+//	}
+//	ft_printf("0 0\n");
+//	return (0);
+//}
 
 
 
