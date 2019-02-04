@@ -33,4 +33,5 @@ void	first_value_of_vm(t_filler *filler, char **line)
 	set_size_of_field(filler, line);
 	skip_n_lines(1, g_fd);
 	filler->fst_launch = 0;
+	filler->count = 0;
 } 

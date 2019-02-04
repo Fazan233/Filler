@@ -103,9 +103,48 @@
 //	}
 //}
 
+//int main()
+//{
+//	int fd;
+//	int fdwork;
+//	char *line;
+//	char *ptr;
+//
+//	fd = open("../resources/carli_test", O_RDONLY);
+//	fdwork = open("../work", O_RDWR);
+//
+//	while (get_next_line(fd, &line) > 0)
+//	{
+//		ptr = line;
+//		while (*ptr != 0)
+//		{
+//			if (*ptr == 'o' || *ptr == 'x')
+//				ft_fprintf(fdwork, "{RED}");
+//			ft_fprintf(fdwork, "%c", *ptr);
+//			if (*ptr == 'o' || *ptr == 'x')
+//				ft_fprintf(fdwork, "{EOC}");
+//			ptr++;
+//		}
+//		ft_fprintf(fdwork, "\n");
+//		free(line);
+//	}
+//}
 
 
+int main()
+{
+	int fd;
+	int fd_vm = 0;
+	char *line;
 
+	fd = open("file", O_RDWR);
+	while (get_next_line(fd_vm, &line) > 0)
+	{
+		ft_fprintf(fd, "%s\n", line);
+	}
+	ft_printf("0 0\n");
+	return (0);
+}
 
 
 

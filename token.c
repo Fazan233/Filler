@@ -1,5 +1,7 @@
 #include "filler.h"
 
+
+
 void	set_token_param(t_filler *flr)
 {
 	char	*line;
@@ -22,5 +24,6 @@ void	set_token_param(t_filler *flr)
 		get_next_line(g_fd, &line);
 		flr->map_t[i] = line;
 	}
+	get_real_size_token(flr);
 }
 

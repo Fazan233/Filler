@@ -2,32 +2,6 @@
 #include "filler.h"
 # define ABSM(x) ((x) < 0) ? ((x) * -1) : (x)
 
-int 	main(void)
-{
-	char		*line;
-	t_filler	flr;
-	t_point		pos;
-
-	g_fd = 0;
-	while (get_next_line(g_fd, &line) > 0)
-	{
-		flr.fst_launch = *line == '$' ? 1 : 0;
-		if (flr.fst_launch)
-			first_value_of_vm(&flr, &line);
-		else {
-			free(line);
-			skip_n_lines(1, g_fd);
-		}
-//		fill_in_the_map(&flr);
-		write_distances(&flr);
-		set_token_param(&flr);
-		pos = put_token(&flr);
-		free_2d_char(&flr.map_t, flr.size_t.y);
-		ft_fprintf(1, "%d %d\n", pos.y, pos.x);
-	}
-	return (0);
-}
-
 static void	finding_dist(t_filler *flr, t_point *pos)
 {
 	int n1;
@@ -43,14 +17,16 @@ static void	finding_dist(t_filler *flr, t_point *pos)
 		{
 			p.x = -1;
 			while (++p.x < flr->size_m.x)
-				if (flr->map_dist[p.y][p.x] > 0)
+			{
+				if (flr->map_dist[p.y][p.x] > -1)
 				{
 					n1 = pos->x - p.x;
 					n2 = pos->y - p.y;
 					res = ft_pow(ABSM(n1), 2) + ft_pow(ABSM(n2), 2);
-					if (res < flr->map_dist[pos->y][pos->x])
+					if (res < flr->map_dist[p.y][p.x])
 						flr->map_dist[p.y][p.x] = res;
 				}
+			}
 		}
 	}
 }
@@ -70,4 +46,43 @@ void		write_distances(t_filler *flr)
 				finding_dist(flr, &pos);
 		free(flr->map);
 	}
+}
+
+int 	main(void)
+{
+	char		*line;
+	t_filler	flr;
+	t_point		pos;
+
+	g_fd = 0;
+	g_fd = open("test", O_RDONLY);
+
+	while (get_next_line(g_fd, &line) > 0)
+	{
+		flr.fst_launch = *line == '$' ? 1 : 0;
+		if (flr.fst_launch)
+			first_value_of_vm(&flr, &line);
+		else
+		{
+			free(line);
+			skip_n_lines(1, g_fd);
+		}
+
+		write_distances(&flr);
+//		int x, y;
+//		y = -1;
+//		while (++y < flr.size_m.y)
+//		{
+//			x = -1;
+//			while (++x < flr.size_m.x)
+//				ft_printf("%5i ", flr.map_dist[y][x]);
+//			ft_printf("\n");
+//		}
+		set_token_param(&flr);
+		pos = put_token(&flr);
+		free_2d_char(&flr.map_t, flr.size_t.y);
+		ft_printf("%d %d\n", pos.y, pos.x);
+		flr.count++;
+	}
+	return (0);
 }

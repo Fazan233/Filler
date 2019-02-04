@@ -22,10 +22,12 @@ typedef struct		s_filler
 	char			*map;
 	char			**map_t;
 	t_point			size_m;
+	t_point			maxp;
+	t_point			minp;
 	t_point			size_t;
+	t_point			real_s_t;
 	char			myfigure;
-
-	t_enmlst		*list; // have to initialize by NULL DONE
+	int 			count;
 }					t_filler;
 
 int 	g_fd;
@@ -40,6 +42,7 @@ void	write_distances(t_filler *flr);
 //void		delele_enemlst(t_enmlst **list);
 t_point		put_token(t_filler *flr);
 void	free_2d_char(char ***str, int n);
+t_point		get_real_size_token(t_filler *flr);
 
 
 #endif

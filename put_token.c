@@ -40,6 +40,26 @@ int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
 	return (intersection);
 }
 
+void	vert_horiz_alg(t_filler *flr, t_point *pos, t_point *finish)
+{
+	if (flr->real_s_t.x > flr->real_s_t.y)
+	{
+		if (finish->x >= pos->x)
+		{
+//			*fin_sum = sum;
+			*finish = *pos;
+		}
+	}
+	else
+	{
+		if (finish->y >= pos->y)
+		{
+//			*fin_sum = sum;
+			*finish = *pos;
+		}
+	}
+}
+
 t_point	put_token(t_filler *flr)
 {
 	t_point	pos;
@@ -48,23 +68,29 @@ t_point	put_token(t_filler *flr)
 	int 	fin_sum;
 	int 	sum;
 
-	finish.x = -1;
-	finish.y = -1;
+	finish.x = 100;
+	finish.y = 100;
 	fin_sum = 1000000000;
 	t.x = flr->size_m.x - flr->size_t.x;
 	t.y = flr->size_m.y - flr->size_t.y;
+
 	pos.y = -1;
 	while (++pos.y <= t.y)
 	{
 		pos.x = -1;
 		while (++pos.x <= t.x)
 			if (can_put_token(flr, &pos, &sum))
-				if (sum < fin_sum)
+			{
+				if (flr->count < 20)
+					vert_horiz_alg(flr, &pos, &finish);
+				else if (sum < fin_sum)
 				{
 					finish = pos;
 					fin_sum = sum;
 				}
+			}
 	}
+
 	return (finish);
 }
 
