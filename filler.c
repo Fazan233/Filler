@@ -21,7 +21,7 @@ static void	finding_dist(t_filler *flr, t_point *pos)
 				{
 					n1 = pos->x - p.x;
 					n2 = pos->y - p.y;
-					res = ft_pow(ABSM(n1), 2) + ft_pow(ABSM(n2), 2);
+					res = (ABSM(n1)) + (ABSM(n2));
 					if (res < flr->map_dist[p.y][p.x])
 						flr->map_dist[p.y][p.x] = res;
 				}
@@ -44,7 +44,7 @@ void		write_distances(t_filler *flr)
 				finding_dist(flr, &pos);
 		free(flr->map);
 	}
-	get_temp_d_matix(flr);
+//	get_temp_d_matix(flr);
 }
 
 int 	main(void)
@@ -68,7 +68,6 @@ int 	main(void)
 		}
 
 		write_distances(&flr);
-		flr.touch = is_touch(&flr);
 //		int x, y;
 //		y = -1;
 //		while (++y < flr.size_m.y)

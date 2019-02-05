@@ -33,22 +33,13 @@ int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
 			if (flr->map_t[tok.y][tok.x] == '*')
 			{
 				if (cell_manipulation(flr, pos, &tok, &intersection))
-				{
-					if (flr->alg_mode == 1)
-						*sum += flr->map_d_x[pos->y + tok.y][pos->x + tok.x];
-					else if (flr->alg_mode == 2)
-						*sum += flr->map_d_y[pos->y + tok.y][pos->x + tok.x];
-					else
 						*sum += flr->map_dist[pos->y + tok.y][pos->x + tok.x];
-				}
 				else if (intersection > 1)
 					return (0);
 			}
 	}
 	return (intersection);
 }
-
-
 
 t_point	put_token(t_filler *flr)
 {
@@ -58,12 +49,6 @@ t_point	put_token(t_filler *flr)
 	int 	fin_sum;
 	int 	sum;
 
-	if (flr->touch)
-		flr->alg_mode = 0;
-	else if (flr ->real_s_t.x > flr->real_s_t.y)
-		flr->alg_mode = 2;
-	else
-		flr->alg_mode = 1;
 	finish.x = 0;
 	finish.y = 0;
 	fin_sum = 1000000000;
