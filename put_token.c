@@ -9,9 +9,9 @@ int		cell_manipulation(t_filler *flr, t_point *pos, t_point *tok, int *inter)
 	if (flr->map_dist[p.y][p.x] < 0)
 	{
 		if (flr->myfigure == 'O')
-			*inter += flr->map_dist[p.y][p.x] == -1 ? 1 : 2;
+				*inter += flr->map_dist[p.y][p.x] == -1 ? 1 : 2;
 		else
-			*inter += flr->map_dist[p.y][p.x] == -2 ? 1 : 2;
+				*inter += flr->map_dist[p.y][p.x] == -2 ? 1 : 2;
 		return (0);
 	}
 	return (1);
@@ -21,6 +21,7 @@ int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
 {
 	int 	intersection;
 	t_point	tok;
+
 
 	*sum = 0;
 	intersection = 0;
@@ -32,7 +33,14 @@ int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
 			if (flr->map_t[tok.y][tok.x] == '*')
 			{
 				if (cell_manipulation(flr, pos, &tok, &intersection))
-					*sum += flr->map_dist[pos->y + tok.y][pos->x + tok.x];
+				{
+					if (flr->alg_mode == 1)
+						*sum += flr->map_d_x[pos->y + tok.y][pos->x + tok.x];
+					else if (flr->alg_mode == 2)
+						*sum += flr->map_d_y[pos->y + tok.y][pos->x + tok.x];
+					else
+						*sum += flr->map_dist[pos->y + tok.y][pos->x + tok.x];
+				}
 				else if (intersection > 1)
 					return (0);
 			}
@@ -40,25 +48,7 @@ int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
 	return (intersection);
 }
 
-void	vert_horiz_alg(t_filler *flr, t_point *pos, t_point *finish)
-{
-	if (flr->real_s_t.x > flr->real_s_t.y)
-	{
-		if (finish->x >= pos->x)
-		{
-//			*fin_sum = sum;
-			*finish = *pos;
-		}
-	}
-	else
-	{
-		if (finish->y >= pos->y)
-		{
-//			*fin_sum = sum;
-			*finish = *pos;
-		}
-	}
-}
+
 
 t_point	put_token(t_filler *flr)
 {
@@ -68,29 +58,28 @@ t_point	put_token(t_filler *flr)
 	int 	fin_sum;
 	int 	sum;
 
-	finish.x = -1;
-	finish.y = -1;
+	if (flr->touch)
+		flr->alg_mode = 0;
+	else if (flr ->real_s_t.x > flr->real_s_t.y)
+		flr->alg_mode = 2;
+	else
+		flr->alg_mode = 1;
+	finish.x = 0;
+	finish.y = 0;
 	fin_sum = 1000000000;
 	t.x = flr->size_m.x - flr->size_t.x;
 	t.y = flr->size_m.y - flr->size_t.y;
-
 	pos.y = -1;
 	while (++pos.y <= t.y)
 	{
 		pos.x = -1;
 		while (++pos.x <= t.x)
 			if (can_put_token(flr, &pos, &sum))
-			{
-//				if (flr->count < 20)
-//					vert_horiz_alg(flr, &pos, &finish);
 				if (sum < fin_sum)
 				{
 					finish = pos;
 					fin_sum = sum;
 				}
-			}
 	}
-
 	return (finish);
 }
-

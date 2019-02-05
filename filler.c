@@ -44,6 +44,7 @@ void		write_distances(t_filler *flr)
 				finding_dist(flr, &pos);
 		free(flr->map);
 	}
+	get_temp_d_matix(flr);
 }
 
 int 	main(void)
@@ -67,6 +68,7 @@ int 	main(void)
 		}
 
 		write_distances(&flr);
+		flr.touch = is_touch(&flr);
 //		int x, y;
 //		y = -1;
 //		while (++y < flr.size_m.y)
@@ -76,10 +78,32 @@ int 	main(void)
 //				ft_printf("%5i ", flr.map_dist[y][x]);
 //			ft_printf("\n");
 //		}
+//
+//		y = -1;
+//		ft_printf("YYYYYY\n");
+//		while (++y < flr.size_m.y)
+//		{
+//			x = -1;
+//			while (++x < flr.size_m.x)
+//				ft_printf("%5i ", flr.map_d_y[y][x]);
+//			ft_printf("\n");
+//		}
+//		y = -1;
+//		ft_printf("XXXXXX\n");
+//		while (++y < flr.size_m.y)
+//		{
+//			x = -1;
+//			while (++x < flr.size_m.x)
+//				ft_printf("%5i ", flr.map_d_x[y][x]);
+//			ft_printf("\n");
+//		}
+
+
 		set_token_param(&flr);
 		pos = put_token(&flr);
 		free_2d_char(&flr.map_t, flr.size_t.y);
 		ft_printf("%d %d\n", pos.y, pos.x);
+
 		flr.count++;
 	}
 	return (0);
