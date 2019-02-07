@@ -1,6 +1,6 @@
 #include "filler.h"
 
-int		cell_manipulation(t_filler *flr, t_point *pos, t_point *tok, int *inter)
+static int	cell_manipulation(t_filler *flr, t_point *pos, t_point *tok, int *inter)
 {
 	t_point	p;
 
@@ -17,7 +17,7 @@ int		cell_manipulation(t_filler *flr, t_point *pos, t_point *tok, int *inter)
 	return (1);
 }
 
-int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
+static int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
 {
 	int 	intersection;
 	t_point	tok;
@@ -41,7 +41,9 @@ int 	can_put_token(t_filler *flr, t_point *pos, int *sum)
 	return (intersection);
 }
 
-t_point	put_token(t_filler *flr)
+
+
+t_point		put_token(t_filler *flr)
 {
 	t_point	pos;
 	t_point	t;
@@ -53,9 +55,9 @@ t_point	put_token(t_filler *flr)
 	finish.y = 0;
 	fin_sum = 1000000000;
 	t.x = flr->size_m.x - flr->size_t.x;
-	t.y = flr->size_m.y - flr->size_t.y;
-	pos.y = -1;
-	while (++pos.y <= t.y)
+	t.y = flr->size_m.y - flr->size_t.y + 1;
+	pos.y = t.y;
+	while (--pos.y >= 0)
 	{
 		pos.x = -1;
 		while (++pos.x <= t.x)
@@ -67,4 +69,40 @@ t_point	put_token(t_filler *flr)
 				}
 	}
 	return (finish);
+}
+
+void		set_token_param(t_filler *flr)
+{
+	char	*line;
+	char	*tmp;
+	int 	i;
+
+	get_next_line(g_fd, &line);
+	tmp = line;
+	while (!ft_isdigit(*tmp))
+		tmp++;
+	flr->size_t.y = ft_atoi(tmp);
+	while ((*tmp) != ' ')
+		tmp++;
+	flr->size_t.x = ft_atoi(tmp);
+	free(line);
+	flr->map_t = (char**)malloc(sizeof(char*) * flr->size_t.y);
+	i = -1;
+	while (++i < flr->size_t.y)
+	{
+		get_next_line(g_fd, &line);
+		flr->map_t[i] = line;
+	}
+	flr->real_s_t = get_real_size_token(flr);
+}
+
+void		skip_n_lines(int n, int fd)
+{
+	char	*line;
+
+	while (n-- > 0)
+	{
+		get_next_line(fd, &line);
+		free(line);
+	}
 }

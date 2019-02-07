@@ -2,6 +2,41 @@
 #include "filler.h"
 # define ABSM(x) ((x) < 0) ? ((x) * -1) : (x)
 
+static void	set_size_of_field(t_filler *filler, char **line)
+{
+	char	*tmp;
+	int 	i;
+	int		j;
+
+	tmp = *line;
+	while (!ft_isdigit(*tmp))
+		tmp++;
+	filler->size_m.y = ft_atoi(tmp);
+	while ((*tmp) != ' ')
+		tmp++;
+	filler->size_m.x = ft_atoi(++tmp);
+	free(*line);
+	filler->map_dist = (int**)malloc(sizeof(int*) * filler->size_m.y);
+	i = -1;
+	while (++i < filler->size_m.y)
+	{
+		filler->map_dist[i] = (int*)malloc(sizeof(int) * filler->size_m.x);
+		j = -1;
+		while (++j < filler->size_m.x)
+			filler->map_dist[i][j] = 20000;
+	}
+}
+
+static void	first_value_of_vm(t_filler *filler, char **line)
+{
+	filler->myfigure = (*line)[10] == '1' ? 'O' : 'X';
+	free(*line);
+	get_next_line(STDIN_FILENO, line);
+	set_size_of_field(filler, line);
+	skip_n_lines(1, g_fd);
+	filler->fst_launch = 0;
+}
+
 static void	finding_dist(t_filler *flr, t_point *pos)
 {
 	int n1;
@@ -29,7 +64,7 @@ static void	finding_dist(t_filler *flr, t_point *pos)
 	}
 }
 
-void		write_distances(t_filler *flr)
+static void	write_distances(t_filler *flr, int fd)
 {
 	t_point		pos;
 
@@ -37,26 +72,28 @@ void		write_distances(t_filler *flr)
 	while (++pos.y < flr->size_m.y)
 	{
 		pos.x = -1;
-		get_next_line(g_fd, &flr->map);
+		get_next_line(STDIN_FILENO, &flr->map);
 		while (++pos.x < flr->size_m.x)
-			if ((flr->map[pos.x + 4] == 'X' ||  flr->map[pos.x + 4] == 'O')
-				&& flr->map_dist[pos.y][pos.x] > 0)
+		{
+			if ((flr->map[pos.x + 4] == 'X' || flr->map[pos.x + 4] == 'O') &&
+				flr->map_dist[pos.y][pos.x] > 0)
 				finding_dist(flr, &pos);
+		}
+		ft_fprintf(fd, "%s\n", flr->map + 4);
 		free(flr->map);
 	}
-//	get_temp_d_matix(flr);
+	ft_fprintf(fd, "\n");
 }
 
-int 	main(void)
+int 		main(void)
 {
+	int 		fd;
 	char		*line;
 	t_filler	flr;
 	t_point		pos;
 
-	g_fd = 0;
-//	g_fd = open("test2", O_RDONLY);
-
-	while (get_next_line(g_fd, &line) > 0)
+	fd = open("filler_maps", O_CREAT | O_RDWR | O_TRUNC);
+	while (get_next_line(STDIN_FILENO, &line) > 0)
 	{
 		flr.fst_launch = *line == '$' ? 1 : 0;
 		if (flr.fst_launch)
@@ -64,46 +101,14 @@ int 	main(void)
 		else
 		{
 			free(line);
-			skip_n_lines(1, g_fd);
+			skip_n_lines(1, STDIN_FILENO);
 		}
-
-		write_distances(&flr);
-//		int x, y;
-//		y = -1;
-//		while (++y < flr.size_m.y)
-//		{
-//			x = -1;
-//			while (++x < flr.size_m.x)
-//				ft_printf("%5i ", flr.map_dist[y][x]);
-//			ft_printf("\n");
-//		}
-//
-//		y = -1;
-//		ft_printf("YYYYYY\n");
-//		while (++y < flr.size_m.y)
-//		{
-//			x = -1;
-//			while (++x < flr.size_m.x)
-//				ft_printf("%5i ", flr.map_d_y[y][x]);
-//			ft_printf("\n");
-//		}
-//		y = -1;
-//		ft_printf("XXXXXX\n");
-//		while (++y < flr.size_m.y)
-//		{
-//			x = -1;
-//			while (++x < flr.size_m.x)
-//				ft_printf("%5i ", flr.map_d_x[y][x]);
-//			ft_printf("\n");
-//		}
-
-
+		write_distances(&flr, fd);
 		set_token_param(&flr);
 		pos = put_token(&flr);
 		free_2d_char(&flr.map_t, flr.size_t.y);
 		ft_printf("%d %d\n", pos.y, pos.x);
-
-		flr.count++;
 	}
+	free_2d_int(&flr.map_dist, flr.size_m.y);
 	return (0);
 }
